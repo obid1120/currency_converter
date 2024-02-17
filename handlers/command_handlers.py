@@ -88,5 +88,5 @@ async def week_handler(message: Message):
             response = requests.get(f"https://cbu.uz/oz/arkhiv-kursov-valyut/json/{currency_type}/{previous_days.date()}/")
             res = response.json()[0]
             s += f"\t At {res['Date']}, 1 {res['CcyNm_EN']}: {res['Rate']} sums\n"
-            print(s)
+            # print(s)
     await message.reply(s)
