@@ -18,7 +18,8 @@ async def main():
             BotCommand(command="courses", description="Currency courses"),
             BotCommand(command="usd", description="USD currency"),
             BotCommand(command="eur", description="EURO currency"),
-            BotCommand(command="rub", description="Russian ruble currency")
+            BotCommand(command="rub", description="Russian ruble currency"),
+            BotCommand(command="/week", description="A week report")
         ]
     )
     dp = Dispatcher()

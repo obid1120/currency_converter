@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 
 import requests
 from aiogram import Router
@@ -26,7 +27,8 @@ async def help_handler(message: Message):
     s += "/courses - for get a list of all courses\n"
     s += "/usd - for get USD courses\n"
     s += "/eur - for get EURO courses\n"
-    s += "/rub - for get Russian ruble courses\n\n"
+    s += "/rub - for get Russian ruble courses\n"
+    s += "/week - for get current week report\n\n"
 
     s += "if you want to convert any sum, send curreny (only digits)"
 
@@ -73,3 +75,17 @@ async def rub_handler(message: Message):
     s = f"1 {res['CcyNm_EN']} = {res['Rate']} USD\n"
 
     await message.reply(s)
+
+
+@command_handlers.message(Command('week', prefix='!/#'))
+async def week_handler(message: Message):
+    s = ""
+    day_of_week = datetime.datetime.now().strftime('%w')
+    for i in range(int(day_of_week)):
+        previous_days = datetime.datetime.today() - datetime.timedelta(days=i)
+        # print(previous_days.date())
+        response = requests.get(f"https://cbu.uz/oz/arkhiv-kursov-valyut/json/USD/{previous_days.date()}/")
+        res = response.json()[0]
+        s = f"1 {res['CcyNm_EN']} at {res['Date']}: {res['Rate']} USD\n"
+        print(res['Rate'], res['Date'])
+        await message.reply(s)

@@ -13,6 +13,7 @@ message_handlers = Router()
 @message_handlers.message(F.text.isdigit())
 async def message_handler(message: Message):
     x = int(message.text)
+    print(x)
     s = f"{x} sums:\n"
     s += f"\t -{x / int(currencies['USD']['rate']): .2f} UD dollar\n"
     s += f"\t -{x / int(currencies['EUR']['rate']): .2f} Euro\n"
