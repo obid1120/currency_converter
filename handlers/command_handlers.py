@@ -79,13 +79,14 @@ async def rub_handler(message: Message):
 
 @command_handlers.message(Command('week', prefix='!/#'))
 async def week_handler(message: Message):
-    s = ""
+    s = "The week currency rates:\n"
     day_of_week = datetime.datetime.now().strftime('%w')
-    for i in range(int(day_of_week)):
-        previous_days = datetime.datetime.today() - datetime.timedelta(days=i)
-        # print(previous_days.date())
-        response = requests.get(f"https://cbu.uz/oz/arkhiv-kursov-valyut/json/USD/{previous_days.date()}/")
-        res = response.json()[0]
-        s = f"1 {res['CcyNm_EN']} at {res['Date']}: {res['Rate']} USD\n"
-        print(res['Rate'], res['Date'])
-        await message.reply(s)
+    for currency_type in currencies.keys():
+        for i in range(int(day_of_week)):
+            previous_days = datetime.datetime.today() - datetime.timedelta(days=i)
+            # print(previous_days.date())
+            response = requests.get(f"https://cbu.uz/oz/arkhiv-kursov-valyut/json/{currency_type}/{previous_days.date()}/")
+            res = response.json()[0]
+            s += f"\t At {res['Date']}, 1 {res['CcyNm_EN']}: {res['Rate']} sums\n"
+            print(s)
+    await message.reply(s)
